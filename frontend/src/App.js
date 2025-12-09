@@ -1,0 +1,54 @@
+import Home from "./components/Home"
+import Products from "./components/Products"
+import Productcontex from "./context/Productcontex"
+import Login from "./components/Login"
+import Cart from "./components/Cart"
+import {BrowserRouter,Routes,Route} from "react-router-dom"
+import { useState,useEffect } from "react"
+
+const App=()=>{
+const [cartitems,setcartitems]=useState([])
+const remove1=async(id)=>{
+  await fetch(`http://localhost:3000/cart/del/${id}`,{method:"DELETE"})
+  getcart()
+}
+const getcart=async()=>{
+const url=`http://localhost:3000/cart`
+const response =await fetch(url)
+const data=await response.json()
+setcartitems(data)
+}
+ useEffect(()=>{
+getcart();
+},[])
+const increas=async(id)=>{
+  await fetch(`http://localhost:3000/cart/inc/${id}`,{method:"PUT"})
+getcart()
+}
+const decreas=async(id)=>{
+ await fetch(`http://localhost:3000/cart/dec/${id}`,{method:"PUT"})
+getcart()
+}
+const addToCart=async(item)=>{
+  
+  await fetch("http://localhost:3000/cart", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ id:item.id,title:item.title,price:item.price,imageUrl:item.imageUrl,brand:item.brand})
+  });
+getcart()
+}
+  return(
+  <Productcontex.Provider value={{addtocart:addToCart,cartitems,increas:increas,decreas:decreas,remove1:remove1}}>
+<BrowserRouter>
+<Routes>
+  <Route path="/" element={<Home />}/>
+  <Route path="/products" element={<Products />}/>
+  <Route path="/cart" element={<Cart/>}/>
+  <Route path="/login" element={<Login />}/>
+</Routes>
+</BrowserRouter>
+</Productcontex.Provider>
+)
+}
+export default App

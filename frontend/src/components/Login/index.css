@@ -1,0 +1,27 @@
+.bg{
+    background-color:white;
+    display: flex;
+    align-items: center;
+    height: 100vh;
+    background-size: cover;
+    justify-content: center;
+}
+.form1{
+    background-color: white;
+    height: 300px;
+    width: 400px;
+    box-shadow: 2px 2px 5px gray;
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+}
+input{
+    width: 200px;
+    height: 20px;
+    margin-top: 10px;
+}
+.bt3{
+    height: 30px;
+    width: 100px;
+    margin-top: 10px;
+}
