@@ -56,18 +56,22 @@ app.put("/cart/inc/:id",async(req,res)=>{
     await db.run(query);
     res.json("updated qty")
 })
-app.put("/cart/dec/:id",async(req,res)=>{
-    const {id}=req.params
-    query=`UPDATE cart
-SET qty = CASE 
-            WHEN qty > 1 THEN qty - 1
-            ELSE qty
-          END
-WHERE id = ${id};
-`
-    await db.run(query);
-    res.json("updated qty")
-})
+app.put("/cart/dec/:id", async (req, res) => {
+  const { id } = req.params;
+
+  const item = await db.get(`SELECT qty FROM cart WHERE id=?`, [id]);
+
+  if (!item) return res.json("No item found");
+
+  if (item.qty > 1) {
+    await db.run(`UPDATE cart SET qty = qty - 1 WHERE id=?`, [id]);
+  } else {
+    await db.run(`DELETE FROM cart WHERE id=?`, [id]);
+  }
+
+  res.json("updated qty");
+});
+
 
 app.delete("/cart/del/:id",async(req,res)=>{
 const {id}=req.params
