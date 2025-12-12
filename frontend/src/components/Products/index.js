@@ -1,4 +1,4 @@
-import {Navigate} from "react-router-dom"
+import {Navigate,useLocation} from "react-router-dom"
 import { useState,useEffect } from "react"
 import Cookies from "js-cookie"
 import Navbar from '../Navbar'
@@ -22,6 +22,10 @@ const [activeoptionid,setactiveoptionid]=useState(sortbyOptions[0].optionId)
 const [productdata,setproductdata]=useState([])
 const [searchprod,setsearchprod]=useState('')
 const cookie=Cookies.get('jwt_token')
+
+ const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const searchQuery = params.get("search") || "";
 useEffect(()=>{
     const getproducts=async()=>{
 const apiurl=`https://apis.ccbp.in/products?sort_by=${activeoptionid}`
@@ -48,6 +52,11 @@ if(response.ok){
     getproducts()
 
 },[activeoptionid,cookie])
+ useEffect(() => {
+    if (searchQuery) {
+      setsearchprod(searchQuery.toLowerCase());
+    }
+  }, [searchQuery]);
 const change3=event=>{
   setactiveoptionid(event.target.value)
 }
