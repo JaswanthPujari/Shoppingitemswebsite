@@ -13,7 +13,8 @@ db=await open({
     filename:dbpath,
     driver:sqlite3.Database
 })
-app.listen(3000,()=>{
+const PORT=process.env.PORT || 3000;
+app.listen(PORT,()=>{
     console.log("Server running...")
 })
 }
