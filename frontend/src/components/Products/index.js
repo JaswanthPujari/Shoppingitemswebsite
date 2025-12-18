@@ -28,7 +28,7 @@ const cookie=Cookies.get('jwt_token')
   const searchQuery = params.get("search") || "";
 useEffect(()=>{
     const getproducts=async()=>{
-const apiurl=`https://apis.ccbp.in/products?sort_by=${activeoptionid}`
+const apiurl=`https://dummyjson.com/products?sort_by=${activeoptionid}`
 const options={
 headers:{
 Authorization:`Bearer ${cookie}`
@@ -43,7 +43,7 @@ if(response.ok){
         brand: product.brand,
         price: product.price,
         id: product.id,
-        imageUrl: product.image_url,
+        imageUrl: product.images[0],
         rating: product.rating,
       }))
       setproductdata(updatedData)
