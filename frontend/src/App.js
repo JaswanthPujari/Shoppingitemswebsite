@@ -9,11 +9,11 @@ import { useState,useEffect } from "react"
 const App=()=>{
 const [cartitems,setcartitems]=useState([])
 const remove1=async(id)=>{
-  await fetch(`http://localhost:3000/cart/del/${id}`,{method:"DELETE"})
+  await fetch(`https://shoppingitemswebsite.onrender.com/cart/del/${id}`,{method:"DELETE"})
   getcart()
 }
 const getcart=async()=>{
-const url=`http://localhost:3000/cart`
+const url=`https://shoppingitemswebsite.onrender.com/cart`
 const response =await fetch(url)
 const data=await response.json()
 setcartitems(data)
@@ -22,16 +22,16 @@ setcartitems(data)
 getcart();
 },[])
 const increas=async(id)=>{
-  await fetch(`http://localhost:3000/cart/inc/${id}`,{method:"PUT"})
+  await fetch(`https://shoppingitemswebsite.onrender.com/cart/inc/${id}`,{method:"PUT"})
 getcart()
 }
 const decreas=async(id)=>{
- await fetch(`http://localhost:3000/cart/dec/${id}`,{method:"PUT"})
+ await fetch(`https://shoppingitemswebsite.onrender.com/cart/dec/${id}`,{method:"PUT"})
 getcart()
 }
 const addToCart=async(item)=>{
   
-  await fetch("http://localhost:3000/cart", {
+  await fetch("https://shoppingitemswebsite.onrender.com/cart", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id:item.id,title:item.title,price:item.price,imageUrl:item.imageUrl,brand:item.brand})
