@@ -1,4 +1,4 @@
-import {Navigate,useLocation} from "react-router-dom"
+import {useLocation} from "react-router-dom"
 import { useState,useEffect } from "react"
 import Cookies from "js-cookie"
 import Navbar from '../Navbar'
@@ -28,7 +28,7 @@ const cookie=Cookies.get('jwt_token')
   const searchQuery = params.get("search") || "";
 useEffect(()=>{
     const getproducts=async()=>{
-const apiurl=`https://dummyjson.com/products?sort_by=${activeoptionid}`
+const apiurl=`https://apis.ccbp.in/products?sort_by=${activeoptionid}`
 const options={
 headers:{
 Authorization:`Bearer ${cookie}`
@@ -43,7 +43,7 @@ if(response.ok){
         brand: product.brand,
         price: product.price,
         id: product.id,
-        imageUrl: product.images[0],
+        imageUrl: product.image_url,
         rating: product.rating,
       }))
       setproductdata(updatedData)
@@ -63,8 +63,7 @@ const change3=event=>{
 const changesearch=event=>{
 setsearchprod(event.target.value)
 }
-if(cookie===undefined)
-   return <Navigate to="/login"/>
+
 return(
     <Productcontex.Consumer>
       {value=>{

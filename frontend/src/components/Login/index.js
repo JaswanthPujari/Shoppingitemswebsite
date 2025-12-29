@@ -1,5 +1,5 @@
 import { useState } from "react";
-import {useNavigate} from "react-router-dom"
+import {useNavigate,Navigate} from "react-router-dom"
 import Cookies from 'js-cookie'
 import './index.css'
 
@@ -37,6 +37,10 @@ navigate("/")
             setiserrmsg(true)
             seterrmsg(data.error_msg)
         }
+    }
+    const cookie=Cookies.get('jwt_token')
+    if(cookie!==undefined){
+return <Navigate to="/"/>
     }
     return(
         <div className="bg">

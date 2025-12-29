@@ -2,6 +2,7 @@ import Home from "./components/Home"
 import Products from "./components/Products"
 import Productcontex from "./context/Productcontex"
 import Login from "./components/Login"
+import ProtectedRoute from "./components/ProtectedRoute"
 import Cart from "./components/Cart"
 import {BrowserRouter,Routes,Route} from "react-router-dom"
 import { useState,useEffect } from "react"
@@ -42,9 +43,9 @@ getcart()
   <Productcontex.Provider value={{addtocart:addToCart,cartitems,increas:increas,decreas:decreas,remove1:remove1}}>
 <BrowserRouter>
 <Routes>
-  <Route path="/" element={<Home />}/>
-  <Route path="/products" element={<Products />}/>
-  <Route path="/cart" element={<Cart/>}/>
+  <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>}/>
+  <Route path="/products" element={<ProtectedRoute><Products /></ProtectedRoute>}/>
+  <Route path="/cart" element={<ProtectedRoute><Cart/></ProtectedRoute>}/>
   <Route path="/login" element={<Login />}/>
 </Routes>
 </BrowserRouter>

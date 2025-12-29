@@ -1,13 +1,11 @@
-import { Navigate, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 import Navbar from "../Navbar";
 import "./index.css";
 
 const Home = () => {
-  const cookie = Cookies.get("jwt_token");
+
   const navigate = useNavigate();
 
-  if (cookie === undefined) return <Navigate to="/login" />;
 
   const categories = [
     { name: "Watch", img: "https://img.freepik.com/free-vector/realistic-watches-set_1284-11684.jpg?semt=ais_hybrid&w=740&q=80" },
