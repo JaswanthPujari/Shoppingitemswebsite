@@ -1,5 +1,5 @@
 import {useLocation} from "react-router-dom"
-import { useState,useEffect } from "react"
+import { useState,useEffect,use } from "react"
 import Cookies from "js-cookie"
 import Navbar from '../Navbar'
 import './index.css'
@@ -64,11 +64,10 @@ const changesearch=event=>{
 setsearchprod(event.target.value)
 }
 
-return(
-    <Productcontex.Consumer>
-      {value=>{
-const {addtocart}=value
+
 const filterdata=productdata.filter(each=>each.title.toLowerCase().includes(searchprod))
+const value=use(Productcontex)
+const {addtocart}=value
      return( 
       <>
     <Navbar/>
@@ -98,9 +97,6 @@ const filterdata=productdata.filter(each=>each.title.toLowerCase().includes(sear
           ))}
         </div>
     </div>
-   </>  )}}  
-    </Productcontex.Consumer>
-)
+   </>  )
 }
-
 export default Products

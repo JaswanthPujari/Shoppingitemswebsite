@@ -1,82 +1,25 @@
-const express=require("express")
-const app=express()
-const cors=require("cors")
-const path=require("path")
-const sqlite3=require("sqlite3")
-const {open}=require("sqlite")
-const dbpath=path.join(__dirname,"shop.db")
-app.use(express.json())
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import { connectDB } from "./src/config/db.js";
+import cartRoutes from "./src/routes/cartRoutes.js";
+
+dotenv.config();
+
+const app = express();
+
+app.use(express.json());
 app.use(cors())
-let db=null
-const dbandserver=async()=>{
-db=await open({
-    filename:dbpath,
-    driver:sqlite3.Database
-})
-const PORT=process.env.PORT || 3000;
-app.listen(PORT,()=>{
-    console.log("Server running...")
-})
-}
-dbandserver()
+app.use("/api/cart", cartRoutes);
 
-app.get("/cart",async(req,res)=>{
-    query=`select * from cart`
-    dbres=await db.all(query)
-    res.send(dbres)
-})
-app.post("/cart", async (req, res) => {
-  try {
-    const { id,title,price,imageUrl,brand} = req.body;
+const PORT = process.env.PORT || 5000;
 
-    const existing = await db.get(`SELECT * FROM cart WHERE id=?`, [id]);
+const startServer = async () => {
+  await connectDB();
 
-    if (existing) {
-      await db.run(
-        `UPDATE cart SET qty = qty + 1 WHERE id=?`,
-        [id]
-      );
-      return res.json({ message: "Quantity updated" });
-    }
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+};
 
-        await db.run(
-      `INSERT INTO cart (id, title, price, imageUrl, qty,brand) VALUES (?, ?, ?, ?, ?,?)`,
-      [id, title, price, imageUrl, 1,brand]
-    );
-
-    res.json({ message: "Product added to cart" });
-
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Failed to add product to cart" });
-  }
-});
-app.put("/cart/inc/:id",async(req,res)=>{
-    const {id}=req.params
-    query=`update cart set qty=qty+1 where id=${id}`
-    await db.run(query);
-    res.json("updated qty")
-})
-app.put("/cart/dec/:id", async (req, res) => {
-  const { id } = req.params;
-
-  const item = await db.get(`SELECT qty FROM cart WHERE id=?`, [id]);
-
-  if (!item) return res.json("No item found");
-
-  if (item.qty > 1) {
-    await db.run(`UPDATE cart SET qty = qty - 1 WHERE id=?`, [id]);
-  } else {
-    await db.run(`DELETE FROM cart WHERE id=?`, [id]);
-  }
-
-  res.json("updated qty");
-});
-
-
-app.delete("/cart/del/:id",async(req,res)=>{
-const {id}=req.params
-query=`delete from cart where id=${id}`
-await db.run(query)
-res.send("item deleted")
-})
+startServer();
