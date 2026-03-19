@@ -10,29 +10,30 @@ import { useState,useEffect } from "react"
 const App=()=>{
 const [cartitems,setcartitems]=useState([])
 const remove1=async(id)=>{
-  await fetch(`https://shoppingitemswebsite.onrender.com/cart/del/${id}`,{method:"DELETE"})
+  await fetch(`http://localhost:5000/api/cart/del/${id}`,{method:"DELETE"})
   getcart()
 }
 const getcart=async()=>{
-const url=`https://shoppingitemswebsite.onrender.com/cart`
+const url=`http://localhost:5000/api/cart`
 const response =await fetch(url)
 const data=await response.json()
+
 setcartitems(data)
 }
  useEffect(()=>{
 getcart();
 },[])
-const increas=async(id)=>{
-  await fetch(`https://shoppingitemswebsite.onrender.com/cart/inc/${id}`,{method:"PUT"})
+const increase=async(id)=>{
+  await fetch(`http://localhost:5000/api/cart/inc/${id}`,{method:"PUT"})
 getcart()
 }
-const decreas=async(id)=>{
- await fetch(`https://shoppingitemswebsite.onrender.com/cart/dec/${id}`,{method:"PUT"})
+const decrease=async(id)=>{
+ await fetch(`http://localhost:5000/api/cart/dec/${id}`,{method:"PUT"})
 getcart()
 }
 const addToCart=async(item)=>{
   
-  await fetch("https://shoppingitemswebsite.onrender.com/cart", {
+  await fetch("http://localhost:5000/api/cart", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ id:item.id,title:item.title,price:item.price,imageUrl:item.imageUrl,brand:item.brand})
@@ -40,7 +41,7 @@ const addToCart=async(item)=>{
 getcart()
 }
   return(
-  <Productcontex.Provider value={{addtocart:addToCart,cartitems,increas:increas,decreas:decreas,remove1:remove1}}>
+  <Productcontex.Provider value={{addtocart:addToCart,cartitems,increase:increase,decrease:decrease,remove1:remove1}}>
 <BrowserRouter>
 <Routes>
   <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>}/>
